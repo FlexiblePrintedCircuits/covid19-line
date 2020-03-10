@@ -5,6 +5,7 @@ import os
 import re
 
 import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -26,8 +27,6 @@ import boto3
 
 import json
 import time
-
-matplotlib.use('Agg')
 
 app = Flask(__name__)
 app.debug = False
