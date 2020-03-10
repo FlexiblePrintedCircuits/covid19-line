@@ -15,6 +15,8 @@ from linebot.models import (
 from oauth2client.service_account import ServiceAccountCredentials
 from httplib2 import Http
 import gspread
+import json
+import time
 
 app = Flask(__name__)
 app.debug = False
@@ -86,6 +88,8 @@ def update_data():
         address_val = data_sheet.acell('H{}'.format(counter)).value
         age_val = data_sheet.acell('I{}'.format(counter)).value
         sex_val = data_sheet.acell('J{}'.format(counter)).value
+
+        time.sleep(0.5)
 
         counter += 1
 
