@@ -32,14 +32,15 @@ handler = WebhookHandler(SECRET)
 class InfectInfo(db.Model):
     __tablename__ = 'infect_info'
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True)
     prefecture = db.Column(db.String(255))
     open_date = db.Column(db.Date)
     address = db.Column(db.String(255))
     age = db.Column(db.String(255))
     sex = db.Column(db.String(255))
 
-    def __init__(self, prefecture, open_date, address, age, sex):
+    def __init__(self, id, prefecture, open_date, address, age, sex):
+        self.id = id
         self.prefecture = prefecture
         self.open_date = open_date
         self.address = address
@@ -82,6 +83,8 @@ def update_data():
     delete_query = db.session.query(InfectInfo)
     delete_query.delete()
 
+    db_id = 1
+
     while True:
         prefecture_val = ''
         open_date_val = ''
@@ -105,7 +108,8 @@ def update_data():
         counter += 1
 
         if (prefecture_val != ''):
-            reg = InfectInfo(prefecture_val, open_date_val, address_val, age_val, sex_val)
+            reg = InfectInfo(db_id, prefecture_val, open_date_val, address_val, age_val, sex_val)
+            db_id += 1
             db.session.add(reg)
             db.session.commit()
             print("OK: {}".format(counter))
