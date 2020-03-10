@@ -1,5 +1,5 @@
 from flask import Flask, request, abort
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 import os
 
 from linebot import (
