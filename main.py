@@ -93,7 +93,7 @@ def update_data():
 
         counter += 1
 
-        if (id_val != ''):
+        if (prefecture_val != ''):
             reg = InfectInfo(prefecture_val, open_date_val, address_val, age_val, sex_val)
             db.session.add(reg)
             db.session.commit()
