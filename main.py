@@ -83,13 +83,24 @@ def update_data():
     #delete_query.delete()
 
     while True:
-        prefecture_val = data_sheet.acell('C{}'.format(counter)).value
-        open_date_val = data_sheet.acell('E{}'.format(counter)).value
-        address_val = data_sheet.acell('H{}'.format(counter)).value
-        age_val = data_sheet.acell('I{}'.format(counter)).value
-        sex_val = data_sheet.acell('J{}'.format(counter)).value
+        prefecture_val = ''
+        open_date_val = ''
+        address_val = ''
+        age_val = ''
+        sex_val = ''
 
-        time.sleep(0.5)
+        vals = data_sheet.row_values(counter)
+
+        try:
+            prefecture_val = vals[2]
+            open_date_val = vals[4]
+            address_val = vals[7]
+            age_val = vals[8]
+            sex_val = vals[9]
+        except:
+            break
+
+        time.sleep(1)
 
         counter += 1
 
