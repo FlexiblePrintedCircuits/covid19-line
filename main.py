@@ -40,7 +40,7 @@ SECRET = os.environ["CHANNEL_SECRET"]
 line_bot_api = LineBotApi(ACCESS_TOKEN)
 handler = WebhookHandler(SECRET)
 
-aws_s3_bucket = os.environ['AWS_BUCKET']
+#aws_s3_bucket = os.environ['AWS_BUCKET']
 
 class InfectInfo(db.Model):
     __tablename__ = 'infect_info'
