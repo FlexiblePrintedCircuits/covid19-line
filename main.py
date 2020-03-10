@@ -95,7 +95,7 @@ def get_data(get_prefecture):
         elif (data.age == "90代"):
             by_age_infecters[9] += 1
     
-    send_message = "{}の新型コロナウイルス感染症　感染者データ\n\n男性：{}人\n女性：{}人\n\n画像は、年代別の感染者数を表したグラフです。".format(get_prefecture, all_infecters, all_men_infecters, all_women_infecters)
+    send_message = "{}の新型コロナウイルス感染症　感染者データ\n\n総感染者数：{}\n\n男性：{}人\n女性：{}人\n\n画像は、年代別の感染者数を表したグラフです。".format(get_prefecture, all_infecters, all_men_infecters, all_women_infecters)
 
     labels = ["Under 10", "10~", "20~", "30~", "40~", "50~", "60~", "70~", "80~", "90~"]
     height = by_age_infecters
