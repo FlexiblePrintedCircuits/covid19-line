@@ -7,6 +7,9 @@ import re
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from matplotlib import rcParams
+rcParams['font.family'] = 'sans-serif'
+rcParams['font.sans-serif'] = ['Hiragino Maru Gothic Pro', 'Yu Gothic', 'Meirio', 'Takao', 'IPAexGothic', 'IPAPGothic', 'VL PGothic', 'Noto Sans CJK JP']
 import numpy as np
 
 from linebot import (
@@ -99,7 +102,7 @@ def get_data(get_prefecture):
 
     labels = ["10歳未満", "10代", "20代", "30代", "40代", "50代", "60代", "70代", "80代", "90代"]
     height = by_age_infecters
-    plt.bar(labels, height, color="#1E7F00")
+    plt.bar(labels, height, color="#1E7F00", label="年齢別感染者数")
 
     file_name = "by_age_{}.png".format(get_prefecture)
     plt.savefig(file_name)
