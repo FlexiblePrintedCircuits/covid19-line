@@ -212,14 +212,13 @@ def handle_message(event):
 
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=send_list[0])
-        )
-        line_bot_api.reply_message(
-            event.reply_token,
-            ImageSendMessage(
-                original_content_url = send_list[1],
-                preview_image_url = send_list[1]
-            )
+            [
+                TextSendMessage(text=send_list[0]),
+                ImageSendMessage(
+                    original_content_url = send_list[1],
+                    preview_image_url = send_list[1]
+                )
+            ]
         )
 
 if __name__ == "__main__":
