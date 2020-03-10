@@ -1,6 +1,12 @@
 from flask import Flask, request, abort
 from flask_sqlalchemy import SQLAlchemy
+
 import os
+import re
+
+import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -9,14 +15,19 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage,
+    MessageEvent, TextMessage, TextSendMessage, ImageSendMessage
 )
 
 from oauth2client.service_account import ServiceAccountCredentials
 from httplib2 import Http
 import gspread
+
+import boto3
+
 import json
 import time
+
+matplotlib.use('Agg')
 
 app = Flask(__name__)
 app.debug = False
@@ -28,6 +39,8 @@ SECRET = os.environ["CHANNEL_SECRET"]
 
 line_bot_api = LineBotApi(ACCESS_TOKEN)
 handler = WebhookHandler(SECRET)
+
+aws_s3_bucket = os.environ['AWS_BUCKET']
 
 class InfectInfo(db.Model):
     __tablename__ = 'infect_info'
@@ -137,9 +150,11 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=event.message.text))
+    if (event.message.text == "東京都"):
+        print(db.session.query(InfectInfo).filter(InfectInfo.prefecture=="東京都").all())
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=event.message.text))
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT"))
