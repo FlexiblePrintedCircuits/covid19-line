@@ -66,6 +66,8 @@ def update_data():
     sheets_data["private_key"] = os.environ["PRIVATE_KEY"]
     sheets_data["client_id"] = os.environ["CLIENT_ID"]
 
+    print(os.environ["PRIVATE_KEY"])
+
     with open("key.json", "w") as f:
         json.dump(sheets_data, f, indent=2, ensure_ascii=False)
     
