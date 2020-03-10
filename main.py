@@ -99,7 +99,7 @@ def get_data(get_prefecture):
 
     labels = ["10歳未満", "10代", "20代", "30代", "40代", "50代", "60代", "70代", "80代", "90代"]
     height = by_age_infecters
-    plt.bar(left, height, color="#1E7F00")
+    plt.bar(labels, height, color="#1E7F00")
 
     file_name = "by_age_{}.png".format(get_prefecture)
     plt.savefig(file_name)
