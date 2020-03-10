@@ -7,9 +7,6 @@ import re
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from matplotlib import rcParams
-rcParams['font.family'] = 'sans-serif'
-rcParams['font.sans-serif'] = ['Hiragino Maru Gothic Pro', 'Yu Gothic', 'Meirio', 'Takao', 'IPAexGothic', 'IPAPGothic', 'VL PGothic', 'Noto Sans CJK JP']
 import numpy as np
 
 from linebot import (
@@ -98,11 +95,11 @@ def get_data(get_prefecture):
         elif (data.age == "90代"):
             by_age_infecters[9] += 1
     
-    send_message = "{}の新型コロナウイルス感染症　感染者データ\n\n男性：{}人\n女性：{}人".format(get_prefecture, all_infecters, all_men_infecters, all_women_infecters)
+    send_message = "{}の新型コロナウイルス感染症　感染者データ\n\n男性：{}人\n女性：{}人\n\n画像は、年代別の感染者数を表したグラフです。".format(get_prefecture, all_infecters, all_men_infecters, all_women_infecters)
 
-    labels = ["10歳未満", "10代", "20代", "30代", "40代", "50代", "60代", "70代", "80代", "90代"]
+    labels = ["Under 10", "10~", "20~", "30~", "40~", "50~", "60~", "70~", "80~", "90~"]
     height = by_age_infecters
-    plt.bar(labels, height, color="#1E7F00", label="年齢別感染者数")
+    plt.bar(labels, height, color="#1E7F00")
 
     file_name = "by_age_{}.png".format(get_prefecture)
     plt.savefig(file_name)
