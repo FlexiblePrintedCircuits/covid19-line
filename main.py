@@ -39,7 +39,7 @@ SECRET = os.environ["CHANNEL_SECRET"]
 line_bot_api = LineBotApi(ACCESS_TOKEN)
 handler = WebhookHandler(SECRET)
 
-#aws_s3_bucket = os.environ['AWS_BUCKET']
+aws_s3_bucket = os.environ['AWS_BUCKET']
 
 class InfectInfo(db.Model):
     __tablename__ = 'infect_info'
@@ -58,6 +58,64 @@ class InfectInfo(db.Model):
         self.address = address
         self.age = age
         self.sex = sex
+
+
+def get_data(get_prefecture):
+    all_data = db.session.query(InfectInfo).filter(InfectInfo.prefecture==get_prefecture).all()
+    
+    all_infecters = len(all_data)
+    all_men_infecters = 0
+    all_women_infecters = 0
+    by_age_infecters = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    
+    for data in all_data:
+        if (data.sex == "男性"):
+            all_men_infecters += 1
+        elif (data.sex == "女性"):
+            all_women_infecters += 1
+        
+        if (data.age == "10歳未満"):
+            by_age_infecters[0] += 1
+        elif (data.age == "10代"):
+            by_age_infecters[1] += 1
+        elif (data.age == "20代"):
+            by_age_infecters[2] += 1
+        elif (data.age == "30代"):
+            by_age_infecters[3] += 1
+        elif (data.age == "40代"):
+            by_age_infecters[4] += 1
+        elif (data.age == "50代"):
+            by_age_infecters[5] += 1
+        elif (data.age == "60代"):
+            by_age_infecters[6] += 1
+        elif (data.age == "70代"):
+            by_age_infecters[7] += 1
+        elif (data.age == "80代"):
+            by_age_infecters[8] += 1
+        elif (data.age == "90代"):
+            by_age_infecters[9] += 1
+    
+    send_message = "{}の新型コロナウイルス感染症　感染者データ\n\n男性：{}人\n女性：{}人".format(get_prefecture, all_infecters, all_men_infecters, all_women_infecters)
+
+    labels = ["10歳未満", "10代", "20代", "30代", "40代", "50代", "60代", "70代", "80代", "90代"]
+    height = by_age_infecters
+    plt.bar(left, height, color="#1E7F00")
+
+    file_name = "by_age_{}.png".format(get_prefecture)
+    plt.savefig(file_name)
+
+    s3_resource = boto3.resource('s3')
+    s3_resource.Bucket(aws_s3_bucket).upload_file(file_name, file_name)
+
+    s3_client = boto3.client('s3')
+    s3_image_url = s3_client.generate_presigned_url(
+        ClientMethod = 'get_object',
+        Params       = {'Bucket': aws_s3_bucket, 'Key': file_name},
+        ExpiresIn    = 10,
+        HttpMethod   = 'GET'
+    )
+
+    return [send_message, s3_image_url]
 
 @app.route("/update_data")
 def update_data():
@@ -150,10 +208,19 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     if (event.message.text == "東京都"):
-        print(db.session.query(InfectInfo).filter(InfectInfo.prefecture=="東京都").all())
+        send_list = get_data("東京都")
+
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=event.message.text))
+            TextSendMessage(text=send_list[0])
+        )
+        line_bot_api.reply_message(
+            event.reply_token,
+            ImageSendMessage(
+                original_content_url = send_list[1]
+                preview_image_url = send_list[1]
+            )
+        )
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT"))
