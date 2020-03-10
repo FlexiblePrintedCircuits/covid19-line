@@ -80,8 +80,8 @@ def update_data():
     data_sheet  = gfile.worksheet('東京都')
 
     counter = 2
-    delete_query = db.session.query(InfectInfo)
-    delete_query.delete()
+    #delete_query = db.session.query(InfectInfo)
+    #delete_query.delete()
 
     db_id = 1
 
