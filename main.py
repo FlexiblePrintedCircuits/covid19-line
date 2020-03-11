@@ -27,6 +27,10 @@ import boto3
 
 import json
 import time
+# it added for load json file. 
+# if you don't want to make another files, you must be delete this library.
+# and write about details site this file.
+import codecs
 
 app = Flask(__name__)
 app.debug = False
@@ -40,6 +44,9 @@ line_bot_api = LineBotApi(ACCESS_TOKEN)
 handler = WebhookHandler(SECRET)
 
 aws_s3_bucket = os.environ['AWS_BUCKET']
+
+with codecs.open("detail_sites.json", "r", "urf-8") as f:
+    detail_sites = json.loads(f.read())
 
 class InfectInfo(db.Model):
     __tablename__ = 'infect_info'
@@ -95,7 +102,8 @@ def get_data(get_prefecture):
         elif (data.age == "90代"):
             by_age_infecters[9] += 1
     
-    send_message = "{}の新型コロナウイルス感染症　感染者データ\n\n総感染者数：{}\n\n男性：{}人\n女性：{}人\n\n画像は、年代別の感染者数を表したグラフです。".format(get_prefecture, all_infecters, all_men_infecters, all_women_infecters)
+    send_message = "{}の新型コロナウイルス感染症　感染者データ\n\n総感染者数：{}\n\n男性：{}人\n女性：{}人\n\n画像は、年代別の感染者数を表したグラフです。\n\n".format(get_prefecture, all_infecters, all_men_infecters, all_women_infecters)
+    send_message = "詳細情報はこちらから確認できます\n{}".format(detail_sites[get_prefecture])
 
     labels = ["Under 10", "10~", "20~", "30~", "40~", "50~", "60~", "70~", "80~", "90~"]
     height = by_age_infecters
