@@ -76,24 +76,10 @@ def get_data(get_prefecture):
         
         if (data.age == "10歳未満"):
             by_age_infecters[0] += 1
-        elif (data.age == "10代"):
-            by_age_infecters[1] += 1
-        elif (data.age == "20代"):
-            by_age_infecters[2] += 1
-        elif (data.age == "30代"):
-            by_age_infecters[3] += 1
-        elif (data.age == "40代"):
-            by_age_infecters[4] += 1
-        elif (data.age == "50代"):
-            by_age_infecters[5] += 1
-        elif (data.age == "60代"):
-            by_age_infecters[6] += 1
-        elif (data.age == "70代"):
-            by_age_infecters[7] += 1
-        elif (data.age == "80代"):
-            by_age_infecters[8] += 1
-        elif (data.age == "90代"):
-            by_age_infecters[9] += 1
+        else:
+            age = int(data.age[0])
+            by_age_infecters[age] += 1
+
     
     send_message = "{}の新型コロナウイルス感染症　感染者データ\n\n総感染者数：{}\n\n男性：{}人\n女性：{}人\n\n画像は、年代別の感染者数を表したグラフです。".format(get_prefecture, all_infecters, all_men_infecters, all_women_infecters)
 
