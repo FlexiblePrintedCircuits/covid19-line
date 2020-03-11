@@ -78,7 +78,7 @@ def get_data(get_prefecture):
             by_age_infecters[0] += 1
         else:
             age = int(data.age[0])
-            by_age_infecters[age]
+            by_age_infecters[age] += 1
 
     
     send_message = "{}の新型コロナウイルス感染症　感染者データ\n\n総感染者数：{}\n\n男性：{}人\n女性：{}人\n\n画像は、年代別の感染者数を表したグラフです。".format(get_prefecture, all_infecters, all_men_infecters, all_women_infecters)
